@@ -188,7 +188,7 @@ export default function Portfolio() {
 
           <div className="mt-8" role="region" aria-roledescription="carousel" aria-label="Projects">
             <div
-              ref={track} tabIndex={0} onKeyDown={onKey}
+              ref={track} role="group" aria-label="Project slides" tabIndex={0} onKeyDown={onKey}
               onScroll={(e) => setIndex(Math.round(e.currentTarget.scrollLeft / e.currentTarget.clientWidth))}
               className="noscrollbar flex snap-x snap-mandatory overflow-x-auto motion-safe:scroll-smooth"
             >
