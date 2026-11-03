@@ -6,8 +6,8 @@ const bricolage = Bricolage_Grotesque({ subsets: ["latin"], variable: "--font-br
 const jetbrains = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains" });
 
 export const metadata: Metadata = {
-  title: "Nadine Bush | Frontend Web Developer & Full Stack Software Engineer",
-  description: "Frontend Web Developer and Full Stack Software Engineer building apps with React, Next.js, TypeScript and Tailwind CSS. Open to new opportunities.",
+  title: "Nadine Bush | Frontend Web Developer",
+  description: "Frontend Web Developer building apps with React, Next.js, TypeScript and Tailwind CSS. Open to new opportunities.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -43,7 +43,7 @@ export default function Portfolio() {
             <a href="#projects" className="hidden rounded-md px-3 py-1.5 hover:text-accent sm:block">Projects</a>
             <a href="#about" className="hidden rounded-md px-3 py-1.5 hover:text-accent sm:block">About</a>
             {links.graphicArts && (
-              <a href={links.graphicArts} target="_blank" rel="noreferrer" className="hidden rounded-md px-3 py-1.5 hover:text-accent sm:block">Graphic design</a>
+              <a href={links.graphicArts} target="_blank" rel="noreferrer" className="hidden rounded-md px-3 py-1.5 hover:text-accent sm:block">Graphic Design</a>
             )}
             <ThemeToggle />
             <button onClick={() => setContact(true)} className="rounded-md border border-accent px-4 py-1.5 font-medium text-accent hover:bg-accent-soft">
@@ -61,11 +61,10 @@ export default function Portfolio() {
                 I build web apps that are clear, fast and easy to use.
               </h1>
               <p className="max-w-xl text-lg font-medium leading-7 text-accent">
-                Frontend Web Developer and Full Stack Software Engineer, ready to grow into new opportunities.
+                Frontend Web Developer ready to grow into new opportunities.
               </p>
               <p className="max-w-xl text-lg leading-8 text-muted">
-                I&apos;m Nadine, a frontend software engineer. I turn ideas into working websites and apps,
-                from the first design to the live launch.
+                My name is Nadine Bush, a Frontend Web Developer who turns ideas into working websites and apps, from the first design to the live launch.
               </p>
               <div className="flex flex-wrap gap-3">
                 <a href="#projects" className={primary}>See my work</a>
@@ -74,7 +73,7 @@ export default function Portfolio() {
               </div>
               <ul className="flex flex-wrap gap-x-8 gap-y-2 pt-2 text-sm">
                 <li>{projects.length} live projects</li>
-                <li>Paid internship experience</li>
+                <li>Paid virtual internship experience</li>
                 <li>Full stack: Firebase login, Stripe payments, Next.js API</li>
                 <li>Also a graphic designer and technical writer</li>
               </ul>
@@ -206,13 +205,10 @@ export default function Portfolio() {
             <h2 className="text-3xl font-semibold md:col-span-2 md:text-4xl">About me</h2>
             <div className="space-y-5 md:col-span-3">
               <p className="max-w-prose text-lg leading-8">
-                I&apos;m a frontend software engineer with earlier web development experience, and I&apos;m
-                passionate about both technology and design. I build websites and apps that look good, work well
-                and are easy to maintain. I also work as a graphic designer and technical writer.
+                I&apos;m a Frontend Web Developer with earlier web development experience, and I&apos;m passionate about both technology and design. I build websites and apps that look good, work well and are easy to maintain. I also worked as a graphic designer and technical writer.
               </p>
               <p className="max-w-prose leading-7">
-                On the full stack side, I added Firebase login and Stripe subscriptions to Summarist, and the contact
-                form on this site runs on a Next.js API route that saves messages to a Firebase database.
+                On the full stack side, I added Firebase login and Stripe subscriptions to Summarist, and the contact form on this site runs on a Next.js API route that saves messages to a Firebase database.
               </p>
               <p className="text-muted">
                 Skilled in HTML, CSS, JavaScript, React, Next.js, TypeScript, Tailwind CSS, Firebase and technical writing.
@@ -229,7 +225,7 @@ export default function Portfolio() {
       </main>
 
       <footer className="border-t border-line px-5 py-6 text-center text-sm text-muted">
-        Copyright © 2026 Nadine Bush | Frontend Software Engineer
+        Copyright © 2026 Nadine Bush | Frontend Web Developer
         {links.graphicArts && (
           <>
             {" | "}

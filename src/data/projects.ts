@@ -25,7 +25,7 @@ export type Project = {
 export const projects: Project[] = [
   {
     id: "skinstric", title: "Skinstric", kind: "Paid virtual internship",
-    summary: "A rebuild of the Skinstric skincare AI app, created from scratch on a real client brief.",
+    summary: "Rebuilt the Skinstric skincare analysis app from scratch to the client's Figma designs in Next.js, TypeScript, Tailwind.",
     stack: ["React", "Next.js", "Tailwind CSS", "JavaScript", "Vercel"],
     image: `${A}/Skinstric.jpg`, live: "https://skinstric-sable.vercel.app/", repo: "https://github.com/nbush71/Skinstric",
   },
