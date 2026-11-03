@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import ContactModal from "@/components/ContactModal";
 import ThemeToggle from "@/components/ThemeToggle";
 import { links } from "@/data/links";
@@ -24,71 +24,13 @@ function Brackets({ children, className = "" }: { children: React.ReactNode; cla
   );
 }
 
-function Slide({ p, n, total, onTech }: { p: Project; n: number; total: number; onTech: (t: string) => void }) {
-  return (
-    <div
-      role="group" aria-roledescription="slide" aria-label={`${n} of ${total}: ${p.title}`}
-      className="grid w-full shrink-0 snap-center items-center gap-8 px-1 md:grid-cols-5"
-    >
-      <a href={p.live} target="_blank" rel="noreferrer" aria-label={`Open ${p.title} live`} className="md:col-span-3">
-        <Brackets>
-          <Image src={p.image} alt={`${p.title} screenshot`} width={1280} height={720}
-                 className="aspect-video w-full rounded-sm object-cover object-top" />
-        </Brackets>
-      </a>
-      <div className="space-y-4 md:col-span-2">
-        <div>
-          <p className="font-code text-sm text-accent">{p.kind}</p>
-          <h3 className="mt-1 text-3xl font-semibold md:text-4xl">{p.title}</h3>
-        </div>
-        <p className="max-w-prose text-lg leading-7">{p.summary}</p>
-        <ul className="flex flex-wrap gap-1.5" aria-label="Built with">
-          {p.stack.map((s) => (
-            <li key={s}>
-              {techs.some((t) => t.name === s) ? (
-                <button onClick={() => onTech(s)} title={`Show projects built with ${s}`}
-                        className="rounded-md bg-accent-soft px-2.5 py-1 font-code text-xs hover:outline hover:outline-1 hover:outline-accent">
-                  {s}
-                </button>
-              ) : (
-                <span className="rounded-md border border-line px-2.5 py-1 font-code text-xs text-muted">{s}</span>
-              )}
-            </li>
-          ))}
-        </ul>
-        <div className="flex flex-wrap gap-3 pt-1">
-          <a href={p.live} target="_blank" rel="noreferrer" className={primary}>Open live app</a>
-          <a href={p.repo} target="_blank" rel="noreferrer" className={outline}>Source code</a>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export default function Portfolio() {
   const [tech, setTech] = useState<string | null>(null);
   const [contact, setContact] = useState(false);
-  const [index, setIndex] = useState(0);
-  const track = useRef<HTMLDivElement>(null);
+  const [selectedProjectId, setSelectedProjectId] = useState(projects[0].id);
 
   const visible = tech ? projects.filter((p) => p.stack.includes(tech)) : projects;
-
-  useEffect(() => {
-    track.current?.scrollTo({ left: 0, behavior: "instant" as ScrollBehavior });
-    setIndex(0);
-  }, [tech]);
-
-  function go(i: number) {
-    const el = track.current;
-    if (!el) return;
-    const next = Math.max(0, Math.min(visible.length - 1, i));
-    el.scrollTo({ left: next * el.clientWidth });
-  }
-
-  function onKey(e: React.KeyboardEvent) {
-    if (e.key === "ArrowRight") { e.preventDefault(); go(index + 1); }
-    if (e.key === "ArrowLeft") { e.preventDefault(); go(index - 1); }
-  }
+  const selectedProject = visible.find((p) => p.id === selectedProjectId) ?? visible[0];
 
   return (
     <>
@@ -151,15 +93,16 @@ export default function Portfolio() {
         </section>
 
         <section id="projects" className="mx-auto max-w-6xl px-5 py-16">
-          <div className="flex flex-wrap items-end justify-between gap-4">
-            <h2 className="text-3xl font-semibold md:text-4xl">Projects</h2>
-            <p className="font-code text-sm text-muted" aria-live="polite">
-              {index + 1} / {visible.length}
+          <div className="max-w-2xl">
+            <p className="font-code text-sm font-medium uppercase tracking-[0.18em] text-accent">Selected work</p>
+            <h2 className="mt-2 text-3xl font-semibold md:text-4xl">Interactive feature case studies</h2>
+            <p className="mt-3 leading-7 text-muted">
+              Choose a project to explore what I built, the tools I used, and where you can see the finished work.
             </p>
           </div>
 
-          <div className="mt-5" role="group" aria-label="Filter projects by technology">
-            <p className="mb-2 text-sm text-muted">
+          <div className="mt-8" role="group" aria-label="Filter projects by technology">
+            <p className="mb-3 text-sm text-muted" aria-live="polite">
               {tech ? `Showing ${visible.length} of ${projects.length} projects built with ${tech}.` : "Pick a technology to see the projects that use it."}
             </p>
             <ul className="flex flex-wrap gap-2">
@@ -186,30 +129,75 @@ export default function Portfolio() {
             </ul>
           </div>
 
-          <div className="mt-8" role="region" aria-roledescription="carousel" aria-label="Projects">
-            <div
-              ref={track} role="group" aria-label="Project slides" tabIndex={0} onKeyDown={onKey}
-              onScroll={(e) => setIndex(Math.round(e.currentTarget.scrollLeft / e.currentTarget.clientWidth))}
-              className="noscrollbar flex snap-x snap-mandatory overflow-x-auto motion-safe:scroll-smooth"
-            >
-              {visible.map((p, i) => (
-                <Slide key={p.id} p={p} n={i + 1} total={visible.length} onTech={setTech} />
-              ))}
+          <div className="mt-8">
+            <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3" role="group" aria-label="Choose a project case study">
+              {visible.map((p, i) => {
+                const isSelected = p.id === selectedProject.id;
+                return (
+                  <button
+                    key={p.id}
+                    type="button"
+                    aria-pressed={isSelected}
+                    onClick={() => setSelectedProjectId(p.id)}
+                    className={`flex min-h-16 items-center gap-3 rounded-md border px-4 py-3 text-left transition-colors ${
+                      isSelected
+                        ? "border-accent bg-accent-soft text-ink"
+                        : "border-line bg-card hover:border-accent"
+                    }`}
+                  >
+                    <span className="font-code text-xs text-muted">{String(i + 1).padStart(2, "0")}</span>
+                    <span className="font-medium">{p.title}</span>
+                    <span className="ml-auto text-sm text-muted" aria-hidden="true">{isSelected ? "Selected" : "View"}</span>
+                  </button>
+                );
+              })}
             </div>
-            <div className="mt-6 flex items-center justify-between gap-4">
-              <div className="flex gap-2">
-                <button onClick={() => go(index - 1)} disabled={index === 0} aria-label="Previous project"
-                        className="rounded-md border border-line px-4 py-2 hover:border-accent disabled:opacity-40">Previous</button>
-                <button onClick={() => go(index + 1)} disabled={index >= visible.length - 1} aria-label="Next project"
-                        className="rounded-md border border-line px-4 py-2 hover:border-accent disabled:opacity-40">Next</button>
+
+            <article aria-labelledby="featured-project-title" className="mt-6 grid items-center gap-8 rounded-xl border border-line bg-card p-5 md:p-8 lg:grid-cols-5">
+              <div className="lg:col-span-3">
+                <Brackets>
+                  <Image
+                    src={selectedProject.image}
+                    alt={`${selectedProject.title} project screenshot`}
+                    width={1280}
+                    height={720}
+                    className="aspect-video w-full rounded-sm object-cover object-top"
+                  />
+                </Brackets>
               </div>
-              <div className="flex gap-2">
-                {visible.map((p, i) => (
-                  <button key={p.id} onClick={() => go(i)} aria-label={`Go to ${p.title}`} aria-current={i === index}
-                          className={`h-2.5 rounded-full transition-all ${i === index ? "w-8 bg-accent" : "w-2.5 bg-line hover:bg-muted"}`} />
-                ))}
+              <div className="space-y-5 lg:col-span-2">
+                <div>
+                  <p className="font-code text-sm text-accent">{selectedProject.kind}</p>
+                  <h3 id="featured-project-title" className="mt-2 text-3xl font-semibold md:text-4xl">
+                    {selectedProject.title}
+                  </h3>
+                </div>
+                <p className="text-lg leading-7">{selectedProject.summary}</p>
+                <div>
+                  <h4 className="mb-2 text-sm font-semibold">Built with</h4>
+                  <ul className="flex flex-wrap gap-2" aria-label={`${selectedProject.title} technologies`}>
+                    {selectedProject.stack.map((name) => (
+                      <li key={name}>
+                        <span className="inline-block rounded-md border border-line px-2.5 py-1 font-code text-xs text-muted">
+                          {name}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="flex flex-wrap gap-3 pt-1">
+                  <a href={selectedProject.live} target="_blank" rel="noreferrer" className={primary}>
+                    View live project
+                  </a>
+                  <a href={selectedProject.repo} target="_blank" rel="noreferrer" className={outline}>
+                    View source code
+                  </a>
+                </div>
               </div>
-            </div>
+              <p className="sr-only" aria-live="polite" aria-atomic="true">
+                {selectedProject.title} case study selected.
+              </p>
+            </article>
           </div>
         </section>
 
@@ -245,7 +233,7 @@ export default function Portfolio() {
         {links.graphicArts && (
           <>
             {" | "}
-            <a href={links.graphicArts} target="_blank" rel="noreferrer" className="hover:text-accent">Graphic design portfolio</a>
+            <a href={links.graphicArts} target="_blank" rel="noreferrer" className="hover:text-accent">Graphic Design Portfolio</a>
           </>
         )}
       </footer>
